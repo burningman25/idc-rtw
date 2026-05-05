@@ -31,17 +31,17 @@ const S = {
 
   topbar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 28px', height: '58px', background: C.navy, flexShrink: 0 },
   topTitle: { fontFamily: "'DM Serif Display', serif", fontSize: '17px', fontWeight: '400', color: '#ffffff', margin: 0 },
-  topSub: { fontSize: '10px', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.8px', marginTop: '3px' },
+  topSub: { fontSize: '10px', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '0.8px', marginTop: '3px' },
   topRight: { fontSize: '12px', color: 'rgba(255,255,255,0.5)' },
 
   content: { flex: 1, padding: '22px 28px', maxWidth: '880px', width: '100%', margin: '0 auto', boxSizing: 'border-box' },
 
   card: { background: C.white, border: `1px solid ${C.border}`, borderRadius: '10px', padding: '20px 22px', marginBottom: '14px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' },
 
-  sectionHead: { fontSize: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1.2px', color: C.teal, marginBottom: '14px', paddingBottom: '10px', borderBottom: `1px solid ${C.tealLight}` },
+  sectionHead: { fontSize: '11px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px', color: '#0d7377', marginBottom: '12px', paddingBottom: '8px', borderBottom: '2px solid #e8f6f7' },
 
   grid2: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' },
-  label: { display: 'block', fontSize: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.8px', color: C.textMuted, marginBottom: '5px' },
+  label: { display: 'block', fontSize: '11px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.7px', color: '#374151', marginBottom: '5px' },
   input: { width: '100%', background: '#f8fafc', border: `1px solid ${C.border}`, borderRadius: '7px', padding: '9px 12px', color: C.text, fontSize: '13px', outline: 'none', boxSizing: 'border-box', fontFamily: "'DM Sans', sans-serif" },
   select: { width: '100%', background: '#f8fafc', border: `1px solid ${C.border}`, borderRadius: '7px', padding: '9px 12px', color: C.text, fontSize: '13px', outline: 'none', boxSizing: 'border-box', fontFamily: "'DM Sans', sans-serif" },
   textarea: { width: '100%', background: '#f8fafc', border: `1px solid ${C.border}`, borderRadius: '7px', padding: '9px 12px', color: C.text, fontSize: '13px', outline: 'none', boxSizing: 'border-box', resize: 'vertical', minHeight: '80px', fontFamily: "'DM Sans', sans-serif" },
@@ -368,7 +368,7 @@ export default function App() {
       <style>{`
         @keyframes spin{to{transform:rotate(360deg)}}
         ${FONTS}
-        input::placeholder,textarea::placeholder{color:#a0aec0}
+        input::placeholder,textarea::placeholder{color:#6b7280}
         select option{background:#fff; color:#1a1a2e;}
         input:focus,textarea:focus,select:focus{border-color:#0d7377 !important; box-shadow:0 0 0 3px rgba(13,115,119,0.1);}
       `}</style>
