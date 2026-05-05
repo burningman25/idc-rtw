@@ -1,200 +1,290 @@
-// ── Shared letterhead ────────────────────────────────────────────────────────
+// ── Shared design system ──────────────────────────────────────────────────────
 
 const todayStr = () => new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 
+const refNumber = () => {
+  const d = new Date()
+  return `IDC-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`
+}
+
 const baseCSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Source Sans 3', sans-serif; font-size: 11.5pt; color: #1a1a2e; background: white; }
-  .page { max-width: 780px; margin: 0 auto; padding: 52px 64px; min-height: 100vh; }
-  .letterhead { border-bottom: 3px solid #1a1a2e; padding-bottom: 20px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
-  .lh-left h1 { font-family: 'Libre Baskerville', serif; font-size: 19pt; font-weight: 700; color: #0f0f23; margin-bottom: 4px; }
-  .lh-left .providers { font-size: 8.5pt; color: #444; line-height: 1.6; }
-  .lh-right { text-align: right; font-size: 9pt; color: #555; line-height: 1.7; }
-  .re-block { background: #f4f6fb; border-left: 4px solid #1a1a2e; padding: 14px 18px; margin-bottom: 26px; border-radius: 0 6px 6px 0; }
-  .re-label { font-size: 8.5pt; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #777; margin-bottom: 6px; }
-  .re-content { font-size: 11pt; font-weight: 600; color: #1a1a2e; line-height: 1.6; }
-  .body-para { margin-bottom: 14px; line-height: 1.75; color: #222; }
-  .badge { display: inline-block; color: white; font-size: 9pt; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 5px 14px; border-radius: 4px; margin: 4px 0 16px 0; }
-  .info-box { border: 1.5px solid #d1d5db; border-radius: 8px; padding: 18px 22px; margin: 18px 0; background: #fafafa; break-inside: avoid; page-break-inside: avoid; overflow: hidden; }
-  .info-box h3 { font-family: 'Libre Baskerville', serif; font-size: 10.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #374151; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb; }
-  .info-box ul { list-style: none; padding: 0; }
-  .info-box ul li { padding: 5px 0 5px 20px; position: relative; font-size: 11pt; color: #333; line-height: 1.5; }
-  .info-box ul li::before { content: "▸"; position: absolute; left: 0; color: #6b7280; font-size: 9pt; top: 7px; }
-  .data-table { width: 100%; border-collapse: collapse; margin: 18px 0; break-inside: avoid; page-break-inside: avoid; overflow: hidden; }
-  .data-table td { padding: 10px 14px; font-size: 11pt; border-bottom: 1px solid #e9ecef; }
-  .data-table tr:first-child td { border-top: 1.5px solid #d1d5db; }
-  .data-table td:first-child { font-weight: 600; color: #374151; width: 40%; font-size: 10pt; text-transform: uppercase; letter-spacing: 0.4px; }
-  .sig-block { margin-top: 48px; }
-  .sig-line { border-bottom: 1.5px solid #222; width: 240px; margin-bottom: 6px; }
-  .sig-name { font-weight: 700; font-size: 11.5pt; color: #1a1a2e; }
-  .sig-title { font-size: 10pt; color: #555; margin-top: 2px; }
-  .footer-bar { margin-top: 48px; padding-top: 14px; border-top: 1.5px solid #e5e7eb; font-size: 8.5pt; color: #9ca3af; text-align: center; letter-spacing: 0.3px; }
-  h1, h2, h3 { break-after: avoid; page-break-after: avoid; }
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; color: #000000; background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 8.5in; min-height: 11in; display: flex; flex-direction: column; }
+
+  .header-band { background: #1a1a2e; padding: 22px 52px 18px; display: flex; justify-content: space-between; align-items: flex-end; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .practice-name { font-family: Georgia, serif; font-size: 20pt; font-weight: 700; color: #ffffff; line-height: 1; margin-bottom: 6px; }
+  .providers-line { font-size: 7.5pt; color: #c8c6c0; line-height: 1.7; }
+  .contact-block { text-align: right; font-size: 8.5pt; color: #c8c6c0; line-height: 1.8; }
+  .contact-label { color: #ffffff; font-weight: 700; font-size: 9pt; display: block; margin-bottom: 2px; }
+  .accent-bar { height: 5px; background: #b8943f; flex-shrink: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .body { flex: 1; padding: 26px 52px 18px; display: flex; flex-direction: column; }
+
+  .date-line { font-size: 9.5pt; color: #333333; margin-bottom: 14px; text-align: right; }
+  .recipient-line { font-size: 9.5pt; color: #333333; margin-bottom: 14px; }
+
+  .re-block { border: 1.5px solid #cccccc; border-left: 5px solid #1a1a2e; border-radius: 0 5px 5px 0; padding: 10px 16px; margin-bottom: 16px; background: #f7f7f5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .re-title { font-size: 7.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #555555; margin-bottom: 6px; }
+  .re-grid { display: flex; flex-wrap: wrap; gap: 2px 32px; }
+  .re-item { font-size: 9.5pt; color: #000000; }
+  .re-item .lbl { color: #555555; font-size: 8.5pt; margin-right: 4px; }
+
+  .body-para { margin-bottom: 10px; line-height: 1.65; color: #111111; font-size: 10pt; }
+
+  .badge-row { margin: 8px 0 12px; }
+  .badge { display: inline-block; padding: 6px 16px; border-radius: 3px; font-size: 8.5pt; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #ffffff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .data-table { width: 100%; border-collapse: collapse; margin: 10px 0 12px; page-break-inside: avoid; }
+  .data-table tr { border-bottom: 1px solid #dddddd; }
+  .data-table tr:first-child { border-top: 1.5px solid #aaaaaa; }
+  .data-table tr:last-child { border-bottom: 1.5px solid #aaaaaa; }
+  .data-table td { padding: 8px 10px 8px 0; vertical-align: top; font-size: 10pt; }
+  .data-table td.col-label { width: 36%; font-size: 8pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #444444; padding-top: 9px; }
+  .data-table td.col-value { color: #000000; line-height: 1.5; }
+
+  .info-box { background: #f7f7f5; border: 1.5px solid #cccccc; border-radius: 5px; padding: 10px 14px; margin: 8px 0 12px; page-break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .info-box-label { font-size: 7.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #555555; margin-bottom: 6px; }
+  .info-box-text { font-size: 9.5pt; color: #111111; line-height: 1.6; }
+  .info-box ul { list-style: none; padding: 0; margin: 0; }
+  .info-box ul li { padding: 4px 0 4px 16px; position: relative; font-size: 9.5pt; color: #111111; line-height: 1.5; }
+  .info-box ul li::before { content: "▸"; position: absolute; left: 0; color: #666666; font-size: 8pt; top: 6px; }
+
+  .warn-box { background: #fff5f5; border: 1.5px solid #ffaaaa; border-radius: 5px; padding: 10px 14px; margin: 8px 0 12px; page-break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .warn-box .info-box-label { color: #b91c1c; }
+  .warn-box .info-box-text { color: #111111; }
+
+  .billing-box { background: #f0f4ff; border: 1.5px solid #aabcee; border-radius: 5px; padding: 10px 14px; margin: 8px 0 12px; page-break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .billing-box .info-box-label { color: #1e3a8a; }
+
+  .sig-section { margin-top: auto; padding-top: 16px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .sig-close { font-size: 10pt; color: #111111; margin-bottom: 28px; }
+  .sig-line { width: 210px; border-bottom: 1.5px solid #000000; margin-bottom: 6px; }
+  .sig-name { font-size: 10.5pt; font-weight: 700; color: #000000; }
+  .sig-credential { font-size: 9pt; color: #333333; margin-top: 2px; }
+  .ref-number { font-size: 8pt; color: #888888; text-align: right; }
+
+  .sig-dual { display: flex; gap: 32px; margin-top: 36px; }
+  .sig-block-item { flex: 1; }
+  .sig-block-space { height: 36px; border-bottom: 1.5px solid #000000; margin-bottom: 6px; }
+  .sig-block-label { font-size: 9.5pt; color: #333333; }
+  .sig-block-date { font-size: 9pt; color: #666666; margin-top: 4px; }
+
+  .footer-band { background: #f0efeb; border-top: 1.5px solid #cccccc; padding: 8px 52px; display: flex; justify-content: space-between; align-items: center; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .footer-left { font-size: 7pt; color: #555555; }
+  .footer-right { font-size: 7pt; color: #888888; font-style: italic; }
+
+  h1, h2, h3 { page-break-after: avoid; }
   p, li { orphans: 3; widows: 3; }
 `
 
-const lh = () => `
-  <div class="letterhead">
-    <div class="lh-left">
-      <h1>ID Consultants Inc.</h1>
-      <div class="providers">
-        Latha Srinath, MD &bull; Sunket Ahkee, MD &bull; Kitonga Kiminyo, MD<br/>
-        Minu Mathew, MD &bull; Maria Elias, ARNP &bull; Sheeba Jacob, ARNP
+// ── Shared layout blocks ──────────────────────────────────────────────────────
+
+const header = () => `
+  <div class="header-band">
+    <div>
+      <div class="practice-name">ID Consultants Inc.</div>
+      <div class="providers-line">
+        Latha Srinath, MD &nbsp;&bull;&nbsp; Sunket Ahkee, MD &nbsp;&bull;&nbsp; Kitonga Kiminyo, MD<br/>
+        Minu Mathew, MD &nbsp;&bull;&nbsp; Maria Elias, ARNP &nbsp;&bull;&nbsp; Sheeba Jacob, ARNP
       </div>
     </div>
-    <div class="lh-right">
-      <div>2300 S. Congress Ave, Suite 100</div>
-      <div>Boynton Beach, FL 33426</div>
-      <div>Phone: 561-735-7531 &nbsp;|&nbsp; Fax: 561-742-8250</div>
-      <div style="margin-top:6px;">${todayStr()}</div>
+    <div class="contact-block">
+      <span class="contact-label">ID Consultants Inc.</span>
+      2300 S. Congress Ave, Suite 100<br/>
+      Boynton Beach, FL 33426<br/>
+      Tel: 561-735-7531 &nbsp;|&nbsp; Fax: 561-742-8250
     </div>
-  </div>`
+  </div>
+  <div class="accent-bar"></div>`
 
-const re = (label, lines) => `
+const reBlock = (title, items) => `
   <div class="re-block">
-    <div class="re-label">Re: ${label}</div>
-    <div class="re-content">${lines.filter(Boolean).join('<br/>')}</div>
+    <div class="re-title">Re: ${title}</div>
+    <div class="re-grid">
+      ${items.filter(Boolean).map(([label, value]) =>
+        value ? `<div class="re-item"><span class="lbl">${label}:</span>${value}</div>` : ''
+      ).join('')}
+    </div>
   </div>`
 
 const sig = (provider) => `
-  <p class="body-para" style="margin-top:28px;">Sincerely,</p>
-  <div class="sig-block">
-    <div class="sig-line"></div>
-    <div class="sig-name">${provider || '[Signing Provider]'}</div>
-    <div class="sig-title">ID Consultants Inc. &nbsp;&bull;&nbsp; 2300 S. Congress Ave, Suite 100, Boynton Beach, FL 33426</div>
+  <div class="sig-section">
+    <div>
+      <div class="sig-close">Sincerely,</div>
+      <div class="sig-line"></div>
+      <div class="sig-name">${provider || '[Signing Provider]'}</div>
+      <div class="sig-credential">ID Consultants Inc. &nbsp;&bull;&nbsp; Boynton Beach, FL 33426</div>
+    </div>
+    <div class="ref-number">Ref: ${refNumber()}</div>
   </div>`
 
-const ft = () => `
-  <div class="footer-bar">
-    This document is confidential and intended solely for the use of the addressed recipient.
-    Unauthorized disclosure is prohibited under HIPAA regulations.
+const footer = () => `
+  <div class="footer-band">
+    <div class="footer-left">This document is confidential and intended solely for the use of the addressed recipient. Unauthorized disclosure is prohibited under HIPAA regulations.</div>
+    <div class="footer-right">ID Consultants Inc. &nbsp;&bull;&nbsp; idconsults.net</div>
   </div>`
+
+const infoBox = (label, content, cls='info-box') => `
+  <div class="${cls}">
+    <div class="info-box-label">${label}</div>
+    <div class="info-box-text">${content}</div>
+  </div>`
+
+const listBox = (label, items, cls='info-box') => `
+  <div class="${cls}">
+    <div class="info-box-label">${label}</div>
+    <ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>
+  </div>`
+
+const dataTable = (rows) => `
+  <table class="data-table">
+    ${rows.filter(([,v]) => v).map(([label, value]) => `
+    <tr>
+      <td class="col-label">${label}</td>
+      <td class="col-value">${value}</td>
+    </tr>`).join('')}
+  </table>`
 
 const wrap = (body) => `<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/>
+<html lang="en">
+<head><meta charset="UTF-8"/>
 <style>${baseCSS}</style>
-</head><body><div class="page">
-${body}
-</div></body></html>`
+</head>
+<body>
+<div class="page">
+  ${header()}
+  <div class="body">
+    <div class="date-line">${todayStr()}</div>
+    ${body}
+  </div>
+  ${footer()}
+</div>
+</body>
+</html>`
 
 // ── 1. Return-to-Work ─────────────────────────────────────────────────────────
 
 export function generateRTW(d) {
   const colors = { full: '#1a6b3c', modified: '#8b5e00', not_cleared: '#b91c1c' }
-  const labels = { full: 'FULL DUTY CLEARANCE', modified: 'MODIFIED / RESTRICTED DUTY CLEARANCE', not_cleared: 'NOT CLEARED FOR RETURN TO WORK' }
+  const labels = { full: 'Full Duty Clearance', modified: 'Modified / Restricted Duty Clearance', not_cleared: 'Not Cleared for Return to Work' }
+  const color = colors[d.clearanceType] || '#374151'
+  const label = labels[d.clearanceType] || 'Return-to-Work Status'
+
   return wrap(`
-    ${lh()}
-    <p class="body-para">To Whom It May Concern / Human Resources Department</p>
-    ${re('Return-to-Work Letter', [
-      `Patient: ${d.patient.name || '[Patient Name]'}`,
-      d.patient.dob && `Date of Birth: ${d.patient.dob}`,
-      d.patient.employer && `Employer: ${d.patient.employer}`,
-      d.patient.jobTitle && `Position: ${d.patient.jobTitle}`,
-      d.patient.dateOfInjury && `Date of Injury/Illness: ${d.patient.dateOfInjury}`,
+    <div class="recipient-line">To Whom It May Concern / Human Resources Department</div>
+    ${reBlock('Return-to-Work Letter', [
+      ['Patient',              d.patient.name],
+      ['Date of Birth',        d.patient.dob],
+      ['Employer',             d.patient.employer],
+      ['Position',             d.patient.jobTitle],
+      ['Date of Injury',       d.patient.dateOfInjury],
     ])}
     <p class="body-para">Dear Employer / Human Resources,</p>
-    <p class="body-para">This letter confirms that <strong>${d.patient.name || 'the above-named patient'}</strong>${d.patient.diagnosis ? `, treated for <em>${d.patient.diagnosis}</em>,` : ''} has been evaluated and the following return-to-work determination has been made:</p>
-    <div><span class="badge" style="background:${colors[d.clearanceType] || '#374151'};">${labels[d.clearanceType] || 'RTW STATUS'}</span></div>
+    <p class="body-para">This letter confirms that <strong>${d.patient.name || 'the above-named patient'}</strong>${d.patient.diagnosis ? `, a patient treated for <em>${d.patient.diagnosis}</em>,` : ''} has been clinically evaluated and the following return-to-work determination has been made:</p>
+    <div class="badge-row"><span class="badge" style="background:${color};">&#9679;&nbsp; ${label}</span></div>
     ${d.returnDate ? `<p class="body-para">The patient is authorized to return to work effective <strong>${d.returnDate}</strong>.</p>` : ''}
-    ${d.restrictions?.length ? `<div class="info-box"><h3>Work Restrictions / Modified Duty Requirements</h3><ul>${d.restrictions.map(r=>`<li>${r}</li>`).join('')}</ul></div>` : d.clearanceType==='full' ? `<p class="body-para">The patient is cleared to return to full duty without restrictions.</p>` : ''}
-    <table class="data-table">
-      ${d.returnDate ? `<tr><td>Return-to-Work Date</td><td>${d.returnDate}</td></tr>` : ''}
-      ${d.followUpDate ? `<tr><td>Follow-Up Appointment</td><td>${d.followUpDate}</td></tr>` : ''}
-      ${d.patient.dateOfInjury ? `<tr><td>Date of Injury/Illness</td><td>${d.patient.dateOfInjury}</td></tr>` : ''}
-      ${d.patient.diagnosis ? `<tr><td>Diagnosis</td><td>${d.patient.diagnosis}</td></tr>` : ''}
-    </table>
-    ${d.additionalNotes ? `<p class="body-para"><strong>Additional Notes:</strong> ${d.additionalNotes}</p>` : ''}
-    <p class="body-para">Please contact our office if you require additional documentation regarding this patient's return-to-work status.</p>
-    ${sig(d.signingProvider)}${ft()}`)
+    ${d.restrictions?.length ? listBox('Work Restrictions / Modified Duty Requirements', d.restrictions) : d.clearanceType === 'full' ? `<p class="body-para">The patient is cleared to return to full duty without restrictions.</p>` : ''}
+    ${dataTable([
+      ['Return-to-Work Date',   d.returnDate],
+      ['Follow-Up Appointment', d.followUpDate],
+      ['Date of Injury',        d.patient.dateOfInjury],
+      ['Diagnosis',             d.patient.diagnosis],
+    ])}
+    ${d.additionalNotes ? infoBox('Clinical Notes', d.additionalNotes) : ''}
+    <p class="body-para">Please do not hesitate to contact our office at <strong>561-735-7531</strong> or fax <strong>561-742-8250</strong> if you require additional documentation regarding this determination.</p>
+    ${sig(d.signingProvider)}
+  `)
 }
 
 // ── 2. Medical Necessity ──────────────────────────────────────────────────────
 
 export function generateMedNecessity(d) {
   const uc = { routine: '#1a6b3c', urgent: '#8b5e00', emergent: '#b91c1c' }
-  const ul = { routine: 'ROUTINE', urgent: 'URGENT', emergent: 'EMERGENT' }
+  const ul = { routine: 'Routine Request', urgent: 'Urgent Request', emergent: 'Emergent Request' }
+
   return wrap(`
-    ${lh()}
-    <p class="body-para">To the Medical Director / Utilization Management Department</p>
-    ${re('Medical Necessity Letter', [
-      `Patient: ${d.patient.name || '[Patient Name]'}`,
-      d.patient.dob && `Date of Birth: ${d.patient.dob}`,
-      d.patient.insurancePlan && `Insurance Plan: ${d.patient.insurancePlan}`,
-      d.patient.insuranceId && `Member ID: ${d.patient.insuranceId}`,
-      d.patient.diagnosis && `Diagnosis: ${d.patient.diagnosis}`,
-      d.patient.icdCodes && `ICD-10: ${d.patient.icdCodes}`,
+    <div class="recipient-line">To the Medical Director / Utilization Management Department</div>
+    ${reBlock('Medical Necessity Letter', [
+      ['Patient',        d.patient.name],
+      ['Date of Birth',  d.patient.dob],
+      ['Insurance Plan', d.patient.insurancePlan],
+      ['Member ID',      d.patient.insuranceId],
+      ['Diagnosis',      d.patient.diagnosis],
+      ['ICD-10',         d.patient.icdCodes],
     ])}
     <p class="body-para">Dear Medical Director,</p>
     <p class="body-para">I am writing to document the medical necessity for the following treatment on behalf of my patient, <strong>${d.patient.name || 'the above-named patient'}</strong>. This request is classified as:</p>
-    <div><span class="badge" style="background:${uc[d.urgency]||'#374151'};">${ul[d.urgency]||'ROUTINE'}</span></div>
-    <table class="data-table">
-      ${d.medication ? `<tr><td>Requested Medication</td><td>${d.medication}</td></tr>` : ''}
-      ${d.dosage ? `<tr><td>Dosage</td><td>${d.dosage}</td></tr>` : ''}
-      ${d.frequency ? `<tr><td>Frequency</td><td>${d.frequency}</td></tr>` : ''}
-      ${d.duration ? `<tr><td>Treatment Duration</td><td>${d.duration}</td></tr>` : ''}
-      ${d.patient.icdCodes ? `<tr><td>Diagnosis Codes</td><td>${d.patient.icdCodes}</td></tr>` : ''}
-    </table>
-    ${d.clinicalJustification ? `<div class="info-box"><h3>Clinical Justification</h3><p style="line-height:1.75;color:#333;">${d.clinicalJustification}</p></div>` : ''}
-    ${d.failedTherapies ? `<div class="info-box"><h3>Prior / Failed Therapies</h3><p style="line-height:1.75;color:#333;">${d.failedTherapies}</p></div>` : ''}
-    ${d.additionalNotes ? `<p class="body-para"><strong>Additional Notes:</strong> ${d.additionalNotes}</p>` : ''}
-    <p class="body-para">Based on clinical evidence and my professional medical judgment, this treatment is medically necessary and appropriate. I respectfully request approval at your earliest convenience.</p>
-    ${sig(d.signingProvider)}${ft()}`)
+    <div class="badge-row"><span class="badge" style="background:${uc[d.urgency]||'#374151'};">&#9679;&nbsp; ${ul[d.urgency]||'Routine Request'}</span></div>
+    ${dataTable([
+      ['Requested Medication', d.medication],
+      ['Dosage',               d.dosage],
+      ['Frequency',            d.frequency],
+      ['Treatment Duration',   d.duration],
+      ['Diagnosis Codes',      d.patient.icdCodes],
+    ])}
+    ${d.clinicalJustification ? infoBox('Clinical Justification', d.clinicalJustification) : ''}
+    ${d.failedTherapies ? infoBox('Prior / Failed Therapies', d.failedTherapies) : ''}
+    ${d.additionalNotes ? infoBox('Additional Notes', d.additionalNotes) : ''}
+    <p class="body-para">Based on clinical evidence and my professional medical judgment, this treatment is medically necessary and appropriate for this patient's condition. I respectfully request your approval at the earliest convenience.</p>
+    ${sig(d.signingProvider)}
+  `)
 }
 
 // ── 3. Prior Authorization ────────────────────────────────────────────────────
 
 export function generatePriorAuth(d) {
   return wrap(`
-    ${lh()}
-    <p class="body-para">To the Prior Authorization Department</p>
-    ${re('Prior Authorization Request', [
-      `Patient: ${d.patient.name || '[Patient Name]'}`,
-      d.patient.dob && `Date of Birth: ${d.patient.dob}`,
-      d.patient.insurancePlan && `Insurance Plan: ${d.patient.insurancePlan}`,
-      d.patient.insuranceId && `Member ID: ${d.patient.insuranceId}`,
-      d.patient.diagnosis && `Primary Diagnosis: ${d.patient.diagnosis}`,
+    <div class="recipient-line">To the Prior Authorization Department</div>
+    ${reBlock('Prior Authorization Request', [
+      ['Patient',          d.patient.name],
+      ['Date of Birth',    d.patient.dob],
+      ['Insurance Plan',   d.patient.insurancePlan],
+      ['Member ID',        d.patient.insuranceId],
+      ['Primary Diagnosis',d.patient.diagnosis],
     ])}
     <p class="body-para">Dear Prior Authorization Department,</p>
     <p class="body-para">We are requesting prior authorization for the following service or procedure for our patient, <strong>${d.patient.name || 'the above-named patient'}</strong>. Please review the clinical details below:</p>
-    <table class="data-table">
-      ${d.requestedService ? `<tr><td>Requested Service</td><td>${d.requestedService}</td></tr>` : ''}
-      ${d.cptCode ? `<tr><td>CPT Code(s)</td><td>${d.cptCode}</td></tr>` : ''}
-      ${d.patient.icdCodes ? `<tr><td>Diagnosis (ICD-10)</td><td>${d.patient.icdCodes}</td></tr>` : ''}
-      ${d.facility ? `<tr><td>Facility / Provider</td><td>${d.facility}</td></tr>` : ''}
-      ${d.requestedDate ? `<tr><td>Requested Service Date</td><td>${d.requestedDate}</td></tr>` : ''}
-    </table>
-    ${d.clinicalJustification ? `<div class="info-box"><h3>Clinical Justification</h3><p style="line-height:1.75;color:#333;">${d.clinicalJustification}</p></div>` : ''}
-    ${d.supportingDiagnosis ? `<div class="info-box"><h3>Supporting Diagnoses / Comorbidities</h3><p style="line-height:1.75;color:#333;">${d.supportingDiagnosis}</p></div>` : ''}
-    ${d.additionalNotes ? `<p class="body-para"><strong>Additional Notes:</strong> ${d.additionalNotes}</p>` : ''}
+    ${dataTable([
+      ['Requested Service',    d.requestedService],
+      ['CPT Code(s)',          d.cptCode],
+      ['Diagnosis (ICD-10)',   d.patient.icdCodes],
+      ['Facility / Provider',  d.facility],
+      ['Requested Date',       d.requestedDate],
+    ])}
+    ${d.clinicalJustification ? infoBox('Clinical Justification', d.clinicalJustification) : ''}
+    ${d.supportingDiagnosis ? infoBox('Supporting Diagnoses / Comorbidities', d.supportingDiagnosis) : ''}
+    ${d.additionalNotes ? infoBox('Additional Notes', d.additionalNotes) : ''}
     <p class="body-para">Please direct questions or requests for additional documentation to our office at <strong>561-735-7531</strong> or fax to <strong>561-742-8250</strong>. We appreciate your prompt attention to this request.</p>
-    ${sig(d.signingProvider)}${ft()}`)
+    ${sig(d.signingProvider)}
+  `)
 }
 
 // ── 4. Follow-Up Instructions ─────────────────────────────────────────────────
 
 export function generateFollowUp(d) {
+  const firstName = d.patient.name ? d.patient.name.split(' ')[0] : 'Patient'
   return wrap(`
-    ${lh()}
-    ${re('Follow-Up Instructions', [
-      `Patient: ${d.patient.name || '[Patient Name]'}`,
-      d.patient.dob && `Date of Birth: ${d.patient.dob}`,
-      d.visitDate && `Visit Date: ${d.visitDate}`,
-      d.patient.diagnosis && `Diagnosis: ${d.patient.diagnosis}`,
+    ${reBlock('Follow-Up Instructions', [
+      ['Patient',      d.patient.name],
+      ['Date of Birth',d.patient.dob],
+      ['Visit Date',   d.visitDate],
+      ['Diagnosis',    d.patient.diagnosis],
     ])}
-    <p class="body-para">Dear ${d.patient.name ? d.patient.name.split(' ')[0] : 'Patient'},</p>
+    <p class="body-para">Dear ${firstName},</p>
     <p class="body-para">Thank you for your visit${d.visitDate ? ` on <strong>${d.visitDate}</strong>` : ''}. Please review the following instructions carefully to support your continued recovery.</p>
-    ${d.instructions?.length ? `<div class="info-box"><h3>Care Instructions</h3><ul>${d.instructions.map(i=>`<li>${i}</li>`).join('')}</ul></div>` : ''}
-    <table class="data-table">
-      ${d.followUpDate ? `<tr><td>Follow-Up Appointment</td><td><strong>${d.followUpDate}</strong></td></tr>` : ''}
-      ${d.activityRestrictions ? `<tr><td>Activity Restrictions</td><td>${d.activityRestrictions}</td></tr>` : ''}
-      ${d.medications ? `<tr><td>Medications / Dosing</td><td>${d.medications}</td></tr>` : ''}
-      ${d.emergencyContact ? `<tr><td>Office Phone</td><td>${d.emergencyContact}</td></tr>` : ''}
-    </table>
-    ${d.warningSignals ? `<div class="info-box" style="border-color:#fca5a5;background:#fff5f5;"><h3 style="color:#b91c1c;">&#9888; Warning Signs — Seek Immediate Care If You Experience:</h3><p style="line-height:1.75;color:#333;">${d.warningSignals}</p></div>` : ''}
-    ${d.additionalNotes ? `<p class="body-para"><strong>Additional Notes:</strong> ${d.additionalNotes}</p>` : ''}
+    ${d.instructions?.length ? listBox('Care Instructions', d.instructions) : ''}
+    ${dataTable([
+      ['Follow-Up Appointment', d.followUpDate],
+      ['Activity Restrictions', d.activityRestrictions],
+      ['Medications / Dosing',  d.medications],
+      ['Office Phone',          d.emergencyContact || '561-735-7531'],
+    ])}
+    ${d.warningSignals ? infoBox('Warning Signs — Seek Immediate Care If You Experience', d.warningSignals, 'warn-box') : ''}
+    ${d.additionalNotes ? infoBox('Additional Notes', d.additionalNotes) : ''}
     <p class="body-para">If you have any questions before your next visit, please call our office at <strong>561-735-7531</strong>. We look forward to seeing you at your follow-up appointment.</p>
-    ${sig(d.signingProvider)}${ft()}`)
+    ${sig(d.signingProvider)}
+  `)
 }
 
 // ── 5. Infusion Consent / Billing Disclosure ──────────────────────────────────
@@ -208,57 +298,48 @@ export function generateInfusion(d) {
     'I have been given the opportunity to ask questions and all questions have been answered to my satisfaction.',
   ]
   const consentList = d.consentItems?.length ? d.consentItems : defaultConsent
+  const firstName = d.patient.name ? d.patient.name.split(' ')[0] : 'Patient'
+
   return wrap(`
-    ${lh()}
-    ${re('Infusion Consent & Billing Disclosure', [
-      `Patient: ${d.patient.name || '[Patient Name]'}`,
-      d.patient.dob && `Date of Birth: ${d.patient.dob}`,
-      d.patient.insurancePlan && `Insurance Plan: ${d.patient.insurancePlan}`,
-      d.patient.insuranceId && `Member ID: ${d.patient.insuranceId}`,
-      d.patient.diagnosis && `Diagnosis: ${d.patient.diagnosis}`,
-      d.authorizationNumber && `Authorization #: ${d.authorizationNumber}`,
+    ${reBlock('Infusion Consent & Billing Disclosure', [
+      ['Patient',         d.patient.name],
+      ['Date of Birth',   d.patient.dob],
+      ['Insurance Plan',  d.patient.insurancePlan],
+      ['Member ID',       d.patient.insuranceId],
+      ['Diagnosis',       d.patient.diagnosis],
+      ['Authorization #', d.authorizationNumber],
     ])}
-    <p class="body-para">Dear ${d.patient.name ? d.patient.name.split(' ')[0] : 'Patient'},</p>
-    <p class="body-para">This letter outlines the details of your upcoming infusion therapy and the associated billing information. Please review all sections carefully and sign where indicated.</p>
-    <div class="info-box">
-      <h3>Infusion Therapy Details</h3>
-      <table style="width:100%;border-collapse:collapse;">
-        ${d.medication ? `<tr><td style="padding:6px 0;font-weight:600;color:#374151;width:40%;font-size:10pt;text-transform:uppercase;letter-spacing:0.4px;">Medication</td><td style="padding:6px 0;">${d.medication}</td></tr>` : ''}
-        ${d.dosage ? `<tr><td style="padding:6px 0;font-weight:600;color:#374151;width:40%;font-size:10pt;text-transform:uppercase;letter-spacing:0.4px;">Dosage</td><td style="padding:6px 0;">${d.dosage}</td></tr>` : ''}
-        ${d.frequency ? `<tr><td style="padding:6px 0;font-weight:600;color:#374151;width:40%;font-size:10pt;text-transform:uppercase;letter-spacing:0.4px;">Frequency</td><td style="padding:6px 0;">${d.frequency}</td></tr>` : ''}
-        ${d.infusionDuration ? `<tr><td style="padding:6px 0;font-weight:600;color:#374151;width:40%;font-size:10pt;text-transform:uppercase;letter-spacing:0.4px;">Session Duration</td><td style="padding:6px 0;">${d.infusionDuration}</td></tr>` : ''}
-      </table>
-    </div>
-    <div class="info-box">
-      <h3>Informed Consent</h3>
-      <p style="margin-bottom:12px;line-height:1.7;color:#333;">By signing below, I acknowledge and agree to the following:</p>
-      <ul>${consentList.map(c=>`<li>${c}</li>`).join('')}</ul>
-    </div>
+    <p class="body-para">Dear ${firstName},</p>
+    <p class="body-para">This letter outlines the details of your upcoming infusion therapy and associated billing information. Please review all sections carefully and sign where indicated.</p>
+    ${dataTable([
+      ['Medication',        d.medication],
+      ['Dosage',            d.dosage],
+      ['Frequency',         d.frequency],
+      ['Session Duration',  d.infusionDuration],
+    ])}
+    ${listBox('Informed Consent — By signing below, I acknowledge and agree to the following', consentList)}
     ${(d.billingDisclosure || d.expectedCopay) ? `
-    <div class="info-box" style="border-color:#bfdbfe;background:#eff6ff;">
-      <h3 style="color:#1e40af;">Billing Disclosure</h3>
-      ${d.billingDisclosure ? `<p style="line-height:1.75;color:#333;margin-bottom:10px;">${d.billingDisclosure}</p>` : ''}
-      ${d.expectedCopay ? `<p style="line-height:1.75;color:#333;"><strong>Estimated Patient Responsibility:</strong> ${d.expectedCopay}</p>` : ''}
-      <p style="margin-top:10px;font-size:10pt;color:#555;">Final billing amounts are subject to insurance adjudication and may differ from estimates. Questions? Call 561-735-7531.</p>
+    <div class="billing-box">
+      <div class="info-box-label">Billing Disclosure</div>
+      ${d.billingDisclosure ? `<div class="info-box-text" style="margin-bottom:8px;">${d.billingDisclosure}</div>` : ''}
+      ${d.expectedCopay ? `<div class="info-box-text"><strong>Estimated Patient Responsibility:</strong> ${d.expectedCopay}</div>` : ''}
+      <div class="info-box-text" style="margin-top:8px;font-size:9pt;color:#333;">Final billing amounts are subject to insurance adjudication. Questions? Call 561-735-7531.</div>
     </div>` : ''}
-    ${d.additionalNotes ? `<p class="body-para"><strong>Additional Notes:</strong> ${d.additionalNotes}</p>` : ''}
-    <div style="margin-top:40px;">
-      <table style="width:100%;border-collapse:collapse;">
-        <tr>
-          <td style="width:50%;padding-right:24px;vertical-align:bottom;">
-            <div style="border-bottom:1.5px solid #222;margin-bottom:6px;height:32px;"></div>
-            <div style="font-size:10pt;color:#374151;">Patient Signature</div>
-            <div style="font-size:9.5pt;color:#888;margin-top:4px;">Date: ___________________</div>
-          </td>
-          <td style="width:50%;padding-left:24px;vertical-align:bottom;">
-            <div style="border-bottom:1.5px solid #222;margin-bottom:6px;height:32px;"></div>
-            <div style="font-size:10pt;color:#374151;">Witness / Provider Signature</div>
-            <div style="font-size:9.5pt;color:#888;margin-top:4px;">Date: ___________________</div>
-          </td>
-        </tr>
-      </table>
+    ${d.additionalNotes ? infoBox('Additional Notes', d.additionalNotes) : ''}
+    <div class="sig-dual">
+      <div class="sig-block-item">
+        <div class="sig-block-space"></div>
+        <div class="sig-block-label">Patient Signature</div>
+        <div class="sig-block-date">Date: ___________________</div>
+      </div>
+      <div class="sig-block-item">
+        <div class="sig-block-space"></div>
+        <div class="sig-block-label">Witness / Provider Signature</div>
+        <div class="sig-block-date">Date: ___________________</div>
+      </div>
     </div>
-    ${sig(d.signingProvider)}${ft()}`)
+    ${sig(d.signingProvider)}
+  `)
 }
 
 // ── Dispatcher ────────────────────────────────────────────────────────────────
