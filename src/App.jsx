@@ -146,15 +146,31 @@ function DatePicker({ label, value, onChange }) {
   )
 }
 
-function Toggle({ label, checked, onChange, hint }) {
+function Toggle({ label, checked, onChange, onMsg, offMsg }) {
+  const handleClick = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    onChange(!checked)
+  }
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', background: checked ? '#e8f6f7' : '#f8fafc', border: `1px solid ${checked ? '#0d7377' : '#dde1e8'}`, borderRadius: '8px', cursor: 'pointer' }} onClick={() => onChange(!checked)}>
-      <div>
-        <div style={{ fontSize: '13px', fontWeight: '500', color: '#1a1a2e' }}>{label}</div>
-        {hint && <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '2px' }}>{hint}</div>}
-      </div>
-      <div style={{ width: '40px', height: '22px', borderRadius: '11px', background: checked ? '#0d7377' : '#d1d5db', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
-        <div style={{ position: 'absolute', top: '3px', left: checked ? '21px' : '3px', width: '16px', height: '16px', borderRadius: '50%', background: 'white', transition: 'left 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,0.2)' }} />
+    <div>
+      <div
+        role="switch"
+        aria-checked={checked}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', background: checked ? '#e8f6f7' : '#fff5f5', border: `1.5px solid ${checked ? '#0d7377' : '#fca5a5'}`, borderRadius: '8px', cursor: 'pointer', userSelect: 'none' }}
+        onClick={handleClick}
+      >
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: '500', color: '#1a1a2e' }}>{label}</div>
+          <div style={{ fontSize: '11px', marginTop: '2px', color: checked ? '#0d7377' : '#b91c1c', fontWeight: '500' }}>
+            {checked ? (onMsg || '✓ On') : (offMsg || '✕ Off')}
+          </div>
+        </div>
+        <div
+          style={{ width: '44px', height: '24px', borderRadius: '12px', background: checked ? '#0d7377' : '#e5e7eb', position: 'relative', transition: 'background 0.25s', flexShrink: 0 }}
+        >
+          <div style={{ position: 'absolute', top: '3px', left: checked ? '23px' : '3px', width: '18px', height: '18px', borderRadius: '50%', background: 'white', transition: 'left 0.25s', boxShadow: '0 1px 4px rgba(0,0,0,0.25)' }} />
+        </div>
       </div>
     </div>
   )
@@ -191,10 +207,11 @@ function LetterForm({ form, setForm }) {
       </div>
       <div style={{ marginTop: '14px' }}>
         <Toggle
-          label="Show diagnosis in letter"
-          hint="When off, diagnosis is omitted from the printed letter"
+          label="Include Diagnosis in Letter"
           checked={form.showDiagnosis !== false}
           onChange={v => up('showDiagnosis', v)}
+          onMsg="Diagnosis will appear in the printed letter"
+          offMsg="Diagnosis is hidden — will not appear in the printed letter"
         />
       </div>
     </div>
