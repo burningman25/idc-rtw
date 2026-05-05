@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { supabase, saveLetter, loadLetter } from './supabase'
-import Auth from './Auth.jsx'
 import HistoryPanel from './HistoryPanel.jsx'
 import { generateLetterHTML } from './letterTemplate.js'
 import { LETTER_TYPES, PROVIDERS, EXTRACT_PROMPTS, emptyForm } from './letterTypes.js'
@@ -236,8 +235,7 @@ function LetterForm({ form, setForm }) {
 // ── Main App ──────────────────────────────────────────────────────────────────
 
 export default function App() {
-  const [session, setSession] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const session = { user: { email: 'staff@idconsults.net' } }
   const [step, setStep] = useState('form')
   const [form, setForm] = useState(emptyForm('rtw'))
   const [letterHTML, setLetterHTML] = useState('')
@@ -249,14 +247,7 @@ export default function App() {
   const [refreshHistory, setRefreshHistory] = useState(0)
   const fileRef = useRef()
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => { setSession(session); setLoading(false) })
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => setSession(s))
-    return () => subscription.unsubscribe()
-  }, [])
-
-  if (loading) return <div style={{ ...S.app, alignItems: 'center', justifyContent: 'center' }}><div style={{ color: 'white' }}>Loading…</div></div>
-  if (!session) return <Auth />
+  useEffect(() => {}, [])
 
   const selectType = (id) => { setForm(emptyForm(id)); setLetterHTML(''); setStep('form'); setSavedId(null); setError('') }
 
@@ -342,8 +333,7 @@ export default function App() {
             <div style={S.topSub}>ID Consultants Inc.</div>
           </div>
           <div style={S.userInfo}>
-            <span style={S.userEmail}>{session.user.email}</span>
-            <button style={S.signOutBtn} onClick={() => supabase.auth.signOut()}>Sign out</button>
+            <span style={S.userEmail}>ID Consultants Inc.</span>
           </div>
         </div>
 
