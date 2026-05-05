@@ -1,9 +1,9 @@
 export const LETTER_TYPES = [
-  { id: 'rtw',        label: 'Return-to-Work',              icon: '🏥' },
-  { id: 'mednet',     label: 'Medical Necessity',           icon: '📋' },
-  { id: 'priorauth',  label: 'Prior Authorization',         icon: '✅' },
-  { id: 'followup',   label: 'Follow-Up Instructions',      icon: '📅' },
-  { id: 'infusion',   label: 'Infusion Consent / Billing',  icon: '💉' },
+  { id: 'rtw',        label: 'Return to Work',     icon: '🏥' },
+  { id: 'mednet',     label: 'Med Necessity',      icon: '📋' },
+  { id: 'priorauth',  label: 'Prior Auth',         icon: '✅' },
+  { id: 'followup',   label: 'Follow-Up',          icon: '📅' },
+  { id: 'infusion',   label: 'Infusion Consent',   icon: '💉' },
 ]
 
 export const PROVIDERS = [
