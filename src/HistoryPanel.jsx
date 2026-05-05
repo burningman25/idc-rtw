@@ -39,9 +39,17 @@ export default function HistoryPanel({ activeId, onSelect, onNew, refreshTrigger
     setPrintingId(null)
   }
 
-  const filtered = letters.filter(l =>
-    l.patient_name?.toLowerCase().includes(search.toLowerCase())
-  )
+  const filtered = letters.filter(l => {
+    if (!search.trim()) return true
+    const q = search.toLowerCase().trim()
+    return (
+      l.patient_name?.toLowerCase().includes(q) ||
+      l.letter_type?.toLowerCase().includes(q) ||
+      TYPE_BADGES[l.letter_type]?.label?.toLowerCase().includes(q) ||
+      l.signing_provider?.toLowerCase().includes(q) ||
+      new Date(l.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toLowerCase().includes(q)
+    )
+  })
 
   const fmt = (d) => new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 
@@ -67,7 +75,7 @@ export default function HistoryPanel({ activeId, onSelect, onNew, refreshTrigger
             color: '#ffffff', fontSize: '12px', outline: 'none',
             fontFamily: "'DM Sans', sans-serif"
           }}
-          placeholder="Search patient…"
+          placeholder="Name, type, provider, date…"
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
