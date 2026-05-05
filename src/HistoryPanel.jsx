@@ -69,15 +69,29 @@ export default function HistoryPanel({ activeId, onSelect, onNew, refreshTrigger
 
   const handleDeleteConfirm = async (e) => {
     e.stopPropagation()
-    setDeletingId(confirmId)
+    const idToDelete = confirmId   // capture before clearing state
     setConfirmId(null)
+    setDeletingId(idToDelete)
     try {
-      // Delete letter_data first (cascade should handle it but be explicit)
-      await supabase.from('letter_data').delete().eq('letter_id', deletingId)
-      await supabase.from('letters').delete().eq('id', deletingId)
-      setLetters(prev => prev.filter(l => l.id !== deletingId))
-      if (onDelete) onDelete(deletingId)
-    } catch (e) { console.error('Delete failed:', e) }
+      // Delete all child records first to avoid FK constraint errors
+      await supabase.from('letter_versions').delete().eq('letter_id', idToDelete)
+      await supabase.from('approvals').delete().eq('letter_id', idToDelete)
+      await supabase.from('audit_events').delete().eq('letter_id', idToDelete)
+      await supabase.from('letter_data').delete().eq('letter_id', idToDelete)
+      const { error } = await supabase.from('letters').delete().eq('id', idToDelete)
+      if (error) {
+        console.error('Delete error:', error)
+        alert('Delete failed: ' + error.message)
+        fetchLetters()
+      } else {
+        setLetters(prev => prev.filter(l => l.id !== idToDelete))
+        if (onDelete) onDelete(idToDelete)
+      }
+    } catch (err) {
+      console.error('Delete exception:', err)
+      alert('Delete failed: ' + err.message)
+      fetchLetters()
+    }
     setDeletingId(null)
   }
 
