@@ -490,6 +490,12 @@ export default function App() {
 
   const handleNew = () => { setForm(emptyForm('rtw')); setLetterHTML(''); setStep('form'); setSavedId(null); setActiveHistoryId(null); setError('') }
 
+  const handleDelete = (deletedId) => {
+    if (activeHistoryId === deletedId) {
+      setForm(emptyForm('rtw')); setLetterHTML(''); setStep('form'); setSavedId(null); setActiveHistoryId(null)
+    }
+  }
+
   const currentType = LETTER_TYPES.find(t => t.id === form.letterType)
 
   return (
@@ -507,6 +513,7 @@ export default function App() {
         onSelect={handleSelectHistory}
         onNew={handleNew}
         refreshTrigger={refreshHistory}
+        onDelete={handleDelete}
       />
 
       <div style={S.main}>
