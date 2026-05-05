@@ -6,52 +6,84 @@ import { LETTER_TYPES, PROVIDERS, EXTRACT_PROMPTS, emptyForm } from './letterTyp
 
 const FONTS = `@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap');`
 
+// ── Color palette ─────────────────────────────────────────────────────────────
+const C = {
+  navy:     '#1a1a2e',
+  teal:     '#0d7377',
+  tealLight:'#e8f6f7',
+  gold:     '#b8943f',
+  goldLight:'#fdf6e8',
+  green:    '#1a6b3c',
+  greenLight:'#e8f5ee',
+  red:      '#b91c1c',
+  bg:       '#f0f2f5',
+  white:    '#ffffff',
+  border:   '#dde1e8',
+  borderMed:'#c4c9d4',
+  text:     '#1a1a2e',
+  textMid:  '#4a5568',
+  textMuted:'#8896a8',
+}
+
 const S = {
-  app: { display: 'flex', height: '100vh', overflow: 'hidden', background: '#f5f4f1', fontFamily: "'DM Sans', sans-serif" },
+  app: { display: 'flex', height: '100vh', overflow: 'hidden', background: C.bg, fontFamily: "'DM Sans', sans-serif" },
   main: { flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' },
-  topbar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 28px', borderBottom: '1px solid #e8e6e1', background: '#fff', flexShrink: 0 },
-  topTitle: { fontFamily: "'DM Serif Display', serif", fontSize: '18px', fontWeight: '400', color: '#1a1a2e', margin: 0 },
-  topSub: { fontSize: '11px', color: '#9a9890', textTransform: 'uppercase', letterSpacing: '0.7px', marginTop: '2px' },
-  userInfo: { display: 'flex', alignItems: 'center', gap: '12px' },
-  userEmail: { fontSize: '12px', color: '#9a9890' },
-  content: { flex: 1, padding: '20px 28px', maxWidth: '860px', width: '100%', margin: '0 auto', boxSizing: 'border-box' },
-  card: { background: '#fff', border: '1px solid #e8e6e1', borderRadius: '10px', padding: '20px 22px', marginBottom: '14px' },
-  sectionHead: { fontSize: '10px', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '1.2px', color: '#9a9890', marginBottom: '14px', paddingBottom: '10px', borderBottom: '1px solid #f0eeea' },
+
+  topbar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 28px', height: '58px', background: C.navy, flexShrink: 0 },
+  topTitle: { fontFamily: "'DM Serif Display', serif", fontSize: '17px', fontWeight: '400', color: '#ffffff', margin: 0 },
+  topSub: { fontSize: '10px', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.8px', marginTop: '3px' },
+  topRight: { fontSize: '12px', color: 'rgba(255,255,255,0.5)' },
+
+  content: { flex: 1, padding: '22px 28px', maxWidth: '880px', width: '100%', margin: '0 auto', boxSizing: 'border-box' },
+
+  card: { background: C.white, border: `1px solid ${C.border}`, borderRadius: '10px', padding: '20px 22px', marginBottom: '14px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' },
+
+  sectionHead: { fontSize: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1.2px', color: C.teal, marginBottom: '14px', paddingBottom: '10px', borderBottom: `1px solid ${C.tealLight}` },
+
   grid2: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' },
-  label: { display: 'block', fontSize: '10px', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.8px', color: '#9a9890', marginBottom: '5px' },
-  input: { width: '100%', background: '#fafaf8', border: '1px solid #e8e6e1', borderRadius: '7px', padding: '9px 12px', color: '#1a1a2e', fontSize: '13px', outline: 'none', boxSizing: 'border-box', fontFamily: "'DM Sans', sans-serif" },
-  select: { width: '100%', background: '#fafaf8', border: '1px solid #e8e6e1', borderRadius: '7px', padding: '9px 12px', color: '#1a1a2e', fontSize: '13px', outline: 'none', boxSizing: 'border-box', fontFamily: "'DM Sans', sans-serif" },
-  textarea: { width: '100%', background: '#fafaf8', border: '1px solid #e8e6e1', borderRadius: '7px', padding: '9px 12px', color: '#1a1a2e', fontSize: '13px', outline: 'none', boxSizing: 'border-box', resize: 'vertical', minHeight: '80px', fontFamily: "'DM Sans', sans-serif" },
-  btn: { background: '#1a1a2e', color: '#fff', border: 'none', borderRadius: '7px', padding: '10px 24px', fontSize: '13px', fontWeight: '500', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", letterSpacing: '0.3px' },
-  btnOutline: { background: 'transparent', color: '#4a4a5a', border: '1px solid #d8d6d1', borderRadius: '7px', padding: '9px 18px', fontSize: '13px', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" },
-  btnSuccess: { background: '#1a6b3c', color: '#fff', border: 'none', borderRadius: '7px', padding: '10px 24px', fontSize: '13px', fontWeight: '500', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" },
-  actionRow: { display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '8px' },
-  err: { background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', padding: '11px 15px', color: '#991b1b', fontSize: '13px', marginBottom: '16px' },
-  successBanner: { background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '8px', padding: '11px 15px', color: '#14532d', fontSize: '13px', marginBottom: '16px' },
-  spinner: { display: 'inline-block', width: '26px', height: '26px', border: '2px solid #e8e6e1', borderTopColor: '#1a1a2e', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 12px' },
+  label: { display: 'block', fontSize: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.8px', color: C.textMuted, marginBottom: '5px' },
+  input: { width: '100%', background: '#f8fafc', border: `1px solid ${C.border}`, borderRadius: '7px', padding: '9px 12px', color: C.text, fontSize: '13px', outline: 'none', boxSizing: 'border-box', fontFamily: "'DM Sans', sans-serif" },
+  select: { width: '100%', background: '#f8fafc', border: `1px solid ${C.border}`, borderRadius: '7px', padding: '9px 12px', color: C.text, fontSize: '13px', outline: 'none', boxSizing: 'border-box', fontFamily: "'DM Sans', sans-serif" },
+  textarea: { width: '100%', background: '#f8fafc', border: `1px solid ${C.border}`, borderRadius: '7px', padding: '9px 12px', color: C.text, fontSize: '13px', outline: 'none', boxSizing: 'border-box', resize: 'vertical', minHeight: '80px', fontFamily: "'DM Sans', sans-serif" },
+
+  btn: { background: C.navy, color: '#fff', border: 'none', borderRadius: '7px', padding: '10px 24px', fontSize: '13px', fontWeight: '500', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", letterSpacing: '0.3px' },
+  btnTeal: { background: C.teal, color: '#fff', border: 'none', borderRadius: '7px', padding: '10px 22px', fontSize: '13px', fontWeight: '500', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" },
+  btnGold: { background: C.gold, color: '#fff', border: 'none', borderRadius: '7px', padding: '10px 22px', fontSize: '13px', fontWeight: '500', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" },
+  btnGreen: { background: C.green, color: '#fff', border: 'none', borderRadius: '7px', padding: '10px 22px', fontSize: '13px', fontWeight: '500', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" },
+  btnOutline: { background: 'transparent', color: C.textMid, border: `1px solid ${C.borderMed}`, borderRadius: '7px', padding: '9px 18px', fontSize: '13px', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" },
+
+  err: { background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', padding: '11px 15px', color: C.red, fontSize: '13px', marginBottom: '16px' },
+  successBanner: { background: C.greenLight, border: `1px solid #86efac`, borderRadius: '8px', padding: '11px 15px', color: C.green, fontSize: '13px', marginBottom: '16px' },
+
+  spinner: { display: 'inline-block', width: '26px', height: '26px', border: `2px solid ${C.border}`, borderTopColor: C.teal, borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 12px' },
   centered: { textAlign: 'center', padding: '60px 0' },
-  centeredText: { color: '#9a9890', fontSize: '14px' },
-  previewFrame: { width: '100%', height: '640px', border: 'none', background: 'white', display: 'block', borderRadius: '10px', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' },
-  previewNote: { textAlign: 'center', fontSize: '12px', color: '#9a9890', marginTop: '10px' },
+  centeredText: { color: C.textMuted, fontSize: '14px' },
+
+  previewFrame: { width: '100%', height: '640px', border: 'none', background: 'white', display: 'block', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' },
+  previewNote: { textAlign: 'center', fontSize: '12px', color: C.textMuted, marginTop: '10px' },
+
   typeGrid: { display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px' },
   typeBtn: (active) => ({
-    padding: '12px 8px', borderRadius: '8px', cursor: 'pointer', textAlign: 'center',
-    border: active ? '1.5px solid #1a1a2e' : '1px solid #e8e6e1',
-    background: active ? '#f5f4f1' : '#fafaf8',
-    transition: 'all 0.15s'
+    padding: '14px 8px', borderRadius: '8px', cursor: 'pointer', textAlign: 'center',
+    border: active ? `2px solid ${C.teal}` : `1px solid ${C.border}`,
+    background: active ? C.tealLight : '#f8fafc',
+    transition: 'all 0.15s',
+    boxShadow: active ? `0 0 0 3px rgba(13,115,119,0.1)` : 'none',
   }),
-  typeIcon: { fontSize: '20px', marginBottom: '5px' },
-  typeLabel: (active) => ({ fontSize: '9px', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.5px', color: active ? '#1a1a2e' : '#9a9890', lineHeight: 1.3 }),
+  typeIcon: { fontSize: '22px', marginBottom: '6px' },
+  typeLabel: (active) => ({ fontSize: '9px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px', color: active ? C.teal : C.textMuted, lineHeight: 1.3 }),
+
   dropzone: (drag) => ({
-    border: `1.5px dashed ${drag ? '#1a1a2e' : '#d8d6d1'}`,
+    border: `2px dashed ${drag ? C.teal : C.borderMed}`,
     borderRadius: '8px', padding: '24px', textAlign: 'center', cursor: 'pointer',
-    transition: 'all 0.2s', background: drag ? '#f5f4f1' : '#fafaf8'
+    transition: 'all 0.2s', background: drag ? C.tealLight : '#f8fafc'
   }),
   dropIcon: { fontSize: '28px', marginBottom: '8px' },
-  dropText: { color: '#4a4a5a', fontSize: '13px', marginBottom: '3px' },
-  dropSub: { color: '#9a9890', fontSize: '11px' },
-  divider: { height: '1px', background: '#e8e6e1', margin: '0' },
-  bottomBar: { background: '#fff', borderTop: '1px solid #e8e6e1', padding: '14px 28px', display: 'flex', justifyContent: 'flex-end', gap: '10px', flexShrink: 0 },
+  dropText: { color: C.textMid, fontSize: '13px', marginBottom: '3px' },
+  dropSub: { color: C.textMuted, fontSize: '11px' },
+
+  divider: { height: '1px', background: C.border },
+  bottomBar: { background: C.white, borderTop: `1px solid ${C.border}`, padding: '14px 28px', display: 'flex', justifyContent: 'flex-end', gap: '10px', flexShrink: 0 },
 }
 
 function Input({ label, value, onChange, placeholder, span2 }) {
@@ -67,7 +99,7 @@ function Textarea({ label, value, onChange, placeholder, hint }) {
   return (
     <div>
       <label style={S.label}>{label}</label>
-      {hint && <div style={{ fontSize: '11px', color: '#9a9890', marginBottom: '4px' }}>{hint}</div>}
+      {hint && <div style={{ fontSize: '11px', color: C.textMuted, marginBottom: '4px' }}>{hint}</div>}
       <textarea style={S.textarea} value={value || ''} onChange={e => onChange(e.target.value)} placeholder={placeholder} />
     </div>
   )
@@ -195,7 +227,7 @@ function LetterForm({ form, setForm }) {
     <div style={S.card}>
       <div style={S.sectionHead}>Instructions & Restrictions</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        <Textarea label="Care Instructions" value={form.instructions?.join('\n')} onChange={v => up('instructions', v.split('\n').filter(r=>r.trim()))} hint="One instruction per line" placeholder={'Take all medications as prescribed\nRest and avoid strenuous activity for 48 hours'} />
+        <Textarea label="Care Instructions" value={form.instructions?.join('\n')} onChange={v => up('instructions', v.split('\n').filter(r=>r.trim()))} hint="One instruction per line" placeholder={'Take all medications as prescribed\nRest and avoid strenuous activity'} />
         <Textarea label="Activity Restrictions" value={form.activityRestrictions} onChange={v => up('activityRestrictions', v)} placeholder="e.g. No driving for 24 hours, no heavy lifting" />
         <Textarea label="Medications / Dosing" value={form.medications} onChange={v => up('medications', v)} placeholder="e.g. Amoxicillin 500mg TID x 10 days" />
         <Textarea label="Warning Signs — Seek Immediate Care If:" value={form.warningSignals} onChange={v => up('warningSignals', v)} placeholder="e.g. Fever over 101°F, severe pain, shortness of breath" />
@@ -252,7 +284,12 @@ export default function App() {
 
   const selectType = (id) => { setForm(emptyForm(id)); setLetterHTML(''); setStep('form'); setSavedId(null); setError('') }
 
-  const toBase64 = (file) => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result.split(',')[1]); r.onerror = () => rej(new Error('Read failed')); r.readAsDataURL(file) })
+  const toBase64 = (file) => new Promise((res, rej) => {
+    const r = new FileReader()
+    r.onload = () => res(r.result.split(',')[1])
+    r.onerror = () => rej(new Error('Read failed'))
+    r.readAsDataURL(file)
+  })
 
   const handleFile = async (f) => {
     if (!f || f.type !== 'application/pdf') { setError('Please upload a PDF file.'); return }
@@ -300,14 +337,25 @@ export default function App() {
     a.click(); URL.revokeObjectURL(url)
   }
 
+  const handlePrint = () => {
+    const win = window.open('', '_blank')
+    win.document.write(letterHTML)
+    win.document.close()
+    win.focus()
+    setTimeout(() => { win.print() }, 500)
+  }
+
   const handleSelectHistory = async (id) => {
     setActiveHistoryId(id)
     try {
       const { letter, form: loadedForm } = await loadLetter(id)
-      setForm({ ...emptyForm(loadedForm.letterType), ...loadedForm })
-      setLetterHTML(letter.letter_html || '')
+      // Regenerate the letter HTML with latest template
+      const reconstructedForm = { ...emptyForm(loadedForm.letterType), ...loadedForm }
+      const freshHTML = generateLetterHTML(reconstructedForm)
+      setForm(reconstructedForm)
+      setLetterHTML(freshHTML)
       setSavedId(id)
-      setStep(letter.letter_html ? 'preview' : 'form')
+      setStep('preview')
     } catch (e) { setError('Could not load letter: ' + e.message) }
   }
 
@@ -317,24 +365,35 @@ export default function App() {
 
   return (
     <div style={S.app}>
-      <style>{`@keyframes spin{to{transform:rotate(360deg)}} ${FONTS} input::placeholder,textarea::placeholder{color:#b8b6b0} select option{background:#fff; color:#1a1a2e;}`}</style>
+      <style>{`
+        @keyframes spin{to{transform:rotate(360deg)}}
+        ${FONTS}
+        input::placeholder,textarea::placeholder{color:#a0aec0}
+        select option{background:#fff; color:#1a1a2e;}
+        input:focus,textarea:focus,select:focus{border-color:#0d7377 !important; box-shadow:0 0 0 3px rgba(13,115,119,0.1);}
+      `}</style>
 
-      <HistoryPanel activeId={activeHistoryId} onSelect={handleSelectHistory} onNew={handleNew} refreshTrigger={refreshHistory} />
+      <HistoryPanel
+        activeId={activeHistoryId}
+        onSelect={handleSelectHistory}
+        onNew={handleNew}
+        refreshTrigger={refreshHistory}
+      />
 
       <div style={S.main}>
+        {/* Top bar */}
         <div style={S.topbar}>
           <div>
             <div style={S.topTitle}>IDC Letter Generator</div>
             <div style={S.topSub}>ID Consultants Inc. · Boynton Beach, FL</div>
           </div>
-          <div style={S.userInfo}>
-            <span style={S.userEmail}>idconsults.net</span>
-          </div>
+          <div style={S.topRight}>idconsults.net</div>
         </div>
 
         <div style={S.content}>
           {error && <div style={S.err}>{error}</div>}
 
+          {/* Extracting */}
           {step === 'extracting' && (
             <div style={S.centered}>
               <div style={S.spinner} />
@@ -342,8 +401,10 @@ export default function App() {
             </div>
           )}
 
+          {/* Form */}
           {step === 'form' && (
             <>
+              {/* Letter type */}
               <div style={S.card}>
                 <div style={S.sectionHead}>Letter Type</div>
                 <div style={S.typeGrid}>
@@ -356,6 +417,7 @@ export default function App() {
                 </div>
               </div>
 
+              {/* PDF Import */}
               <div style={S.card}>
                 <div style={S.sectionHead}>Import from PDF (optional)</div>
                 <div
@@ -372,6 +434,7 @@ export default function App() {
                 <input ref={fileRef} type="file" accept="application/pdf" style={{ display: 'none' }} onChange={e => handleFile(e.target.files[0])} />
               </div>
 
+              {/* Signing Provider */}
               <div style={S.card}>
                 <div style={S.sectionHead}>Signing Provider</div>
                 <select style={S.select} value={form.signingProvider} onChange={e => setForm(f => ({ ...f, signingProvider: e.target.value }))}>
@@ -379,8 +442,10 @@ export default function App() {
                 </select>
               </div>
 
+              {/* Dynamic form */}
               <LetterForm form={form} setForm={setForm} />
 
+              {/* Additional Notes */}
               <div style={S.card}>
                 <div style={S.sectionHead}>Additional Notes</div>
                 <textarea style={S.textarea} value={form.additionalNotes || ''} onChange={e => setForm(f => ({ ...f, additionalNotes: e.target.value }))} placeholder="Any additional notes to include in the letter…" />
@@ -388,6 +453,7 @@ export default function App() {
             </>
           )}
 
+          {/* Preview */}
           {step === 'preview' && (
             <>
               {savedId && <div style={S.successBanner}>✓ Letter saved to history</div>}
@@ -397,6 +463,7 @@ export default function App() {
           )}
         </div>
 
+        {/* Bottom action bar */}
         <div style={S.divider} />
         <div style={S.bottomBar}>
           {step === 'form' && (
@@ -404,8 +471,9 @@ export default function App() {
           )}
           {step === 'preview' && (<>
             <button style={S.btnOutline} onClick={() => setStep('form')}>← Edit Fields</button>
-            {!savedId && <button style={S.btnOutline} onClick={handleSave} disabled={saving}>{saving ? 'Saving…' : '💾 Save'}</button>}
-            <button style={S.btnSuccess} onClick={handleDownload}>⬇ Download HTML</button>
+            {!savedId && <button style={{ ...S.btnTeal }} onClick={handleSave} disabled={saving}>{saving ? 'Saving…' : '💾 Save to History'}</button>}
+            <button style={S.btnGold} onClick={handlePrint}>🖨 Print Letter</button>
+            <button style={S.btnGreen} onClick={handleDownload}>⬇ Download HTML</button>
           </>)}
         </div>
       </div>
