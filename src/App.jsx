@@ -186,7 +186,7 @@ function LetterForm({ form, setForm }) {
         <Input label="Date of Birth" value={form.patient.dob} onChange={v => upP('dob', v)} />
         <Input label="Employer" value={form.patient.employer} onChange={v => upP('employer', v)} />
         <Input label="Job Title" value={form.patient.jobTitle} onChange={v => upP('jobTitle', v)} />
-        <Input label="Date of Injury / Illness" value={form.patient.dateOfInjury} onChange={v => upP('dateOfInjury', v)} />
+        <DatePicker label="Date of Injury / Illness" value={form.patient.dateOfInjury} onChange={v => upP('dateOfInjury', v)} />
         <Input label="Diagnosis" value={form.patient.diagnosis} onChange={v => upP('diagnosis', v)} />
       </div>
       <div style={{ marginTop: '14px' }}>
@@ -370,7 +370,28 @@ export default function App() {
     }
   }
 
-  const handleGenerate = () => { setLetterHTML(generateLetterHTML(form)); setStep('preview'); setSavedId(null) }
+  const handleGenerateAndSave = async () => {
+    const html = generateLetterHTML(form)
+    setLetterHTML(html)
+    setStep('preview')
+    setSavedId(null)
+    // Auto-save to history
+    try {
+      const letter = await saveLetter({ form, letterHTML: html, userEmail: session.user.email })
+      setSavedId(letter.id)
+      setActiveHistoryId(letter.id)
+      setRefreshHistory(r => r + 1)
+    } catch (e) { console.error('Auto-save failed:', e) }
+    // Auto-download as HTML (opens print dialog via browser)
+    const lt = LETTER_TYPES.find(t => t.id === form.letterType)?.label || 'Letter'
+    const blob = new Blob([html], { type: 'text/html' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `IDC_${lt.replace(/\s+/g,'_')}_${form.patient.name?.replace(/\s+/g,'_') || 'Patient'}_${new Date().toISOString().slice(0,10)}.html`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
 
   const handleSave = async () => {
     setSaving(true)
@@ -510,9 +531,9 @@ export default function App() {
           {/* Preview */}
           {step === 'preview' && (
             <>
-              {savedId && <div style={S.successBanner}>✓ Letter saved to history</div>}
+              <div style={S.successBanner}>✓ Saved to history · HTML downloaded — open in Chrome and Print → Save as PDF</div>
               <iframe style={S.previewFrame} srcDoc={letterHTML} title="Letter Preview" sandbox="allow-same-origin" />
-              <div style={S.previewNote}>Download HTML → open in Chrome → Print → Save as PDF</div>
+              <div style={S.previewNote}>Open the downloaded HTML file in Chrome → Cmd+P → Save as PDF</div>
             </>
           )}
         </div>
@@ -521,13 +542,11 @@ export default function App() {
         <div style={S.divider} />
         <div style={S.bottomBar}>
           {step === 'form' && (
-            <button style={S.btn} onClick={handleGenerate}>Generate {currentType?.label} Letter →</button>
+            <button style={S.btn} onClick={handleGenerateAndSave}>Generate & Download {currentType?.label} →</button>
           )}
           {step === 'preview' && (<>
             <button style={S.btnOutline} onClick={() => setStep('form')}>← Edit Fields</button>
-            {!savedId && <button style={{ ...S.btnTeal }} onClick={handleSave} disabled={saving}>{saving ? 'Saving…' : '💾 Save to History'}</button>}
             <button style={S.btnGold} onClick={handlePrint}>🖨 Print Letter</button>
-            <button style={S.btnGreen} onClick={handleDownload}>⬇ Download HTML</button>
           </>)}
         </div>
       </div>
