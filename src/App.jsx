@@ -420,6 +420,60 @@ export default function App() {
     setTimeout(() => { win.print() }, 500)
   }
 
+  const handleSaveAsPDF = () => {
+    const lt = LETTER_TYPES.find(t => t.id === form.letterType)?.label || 'Letter'
+    const filename = `IDC_${lt.replace(/\s+/g,'_')}_${(form.patient.name || 'Patient').replace(/\s+/g,'_')}_${new Date().toISOString().slice(0,10)}`
+    const pdfHTML = letterHTML.replace('</head>', `
+      <style>
+        @page {
+          size: letter;
+          margin: 0;
+        }
+        html, body {
+          width: 8.5in;
+          height: 11in;
+          margin: 0;
+          padding: 0;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+          color-adjust: exact !important;
+        }
+        * { box-sizing: border-box; }
+        @media screen {
+          body {
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+          }
+          .page {
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+          }
+        }
+        @media print {
+          body {
+            background: white;
+            padding: 0;
+          }
+          .no-print { display: none !important; }
+        }
+      </style>
+      <script>
+        window.onload = function() {
+          document.title = '${filename}';
+          var bar = document.createElement('div');
+          bar.className = 'no-print';
+          bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1a1a2e;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;z-index:9999;font-family:Arial,sans-serif;';
+          bar.innerHTML = '<span style="color:rgba(255,255,255,0.7);font-size:12px;">IDC Correspond &nbsp;&bull;&nbsp; ${filename}</span><button onclick="window.print()" style="background:#0d7377;color:white;border:none;border-radius:6px;padding:9px 24px;font-size:13px;font-weight:600;cursor:pointer;font-family:Arial,sans-serif;">Save as PDF / Print</button>';
+          document.body.appendChild(bar);
+        }
+      </script>
+    </head>`)
+    const win = window.open('', '_blank')
+    win.document.write(pdfHTML)
+    win.document.close()
+  }
+
   const handleSelectHistory = async (id) => {
     setActiveHistoryId(id)
     try {
@@ -546,7 +600,8 @@ export default function App() {
           )}
           {step === 'preview' && (<>
             <button style={S.btnOutline} onClick={() => setStep('form')}>← Edit Fields</button>
-            <button style={S.btnGold} onClick={handlePrint}>🖨 Print Letter</button>
+            <button style={S.btnGold} onClick={handlePrint}>🖨 Print</button>
+            <button style={S.btnGreen} onClick={handleSaveAsPDF}>⬇ Save as PDF</button>
           </>)}
         </div>
       </div>
