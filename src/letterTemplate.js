@@ -12,14 +12,15 @@ const baseCSS = `
   body { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; color: #000000; background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .page { width: 8.5in; min-height: 11in; display: flex; flex-direction: column; }
 
-  .header-band { background: #1a1a2e; padding: 22px 52px 18px; display: flex; justify-content: space-between; align-items: flex-end; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .practice-name { font-family: Georgia, serif; font-size: 20pt; font-weight: 700; color: #ffffff; line-height: 1; margin-bottom: 6px; }
-  .providers-line { font-size: 7.5pt; color: #c8c6c0; line-height: 1.7; }
-  .contact-block { text-align: right; font-size: 8.5pt; color: #c8c6c0; line-height: 1.8; }
-  .contact-label { color: #ffffff; font-weight: 700; font-size: 9pt; display: block; margin-bottom: 2px; }
-  .accent-bar { height: 5px; background: #b8943f; flex-shrink: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .header-band { background: #ffffff; padding: 22px 52px 0; display: flex; justify-content: space-between; align-items: flex-start; }
+  .practice-name { font-family: Georgia, serif; font-size: 22pt; font-weight: 700; color: #1a1a2e; line-height: 1; margin-bottom: 5px; }
+  .providers-line { font-size: 7.5pt; color: #444444; line-height: 1.7; }
+  .contact-block { text-align: right; font-size: 8.5pt; color: #333333; line-height: 1.8; padding-top: 4px; }
+  .contact-label { color: #000000; font-weight: 700; font-size: 9pt; display: block; margin-bottom: 2px; }
+  .header-divider { margin: 14px 52px 0; border: none; border-top: 2.5px solid #1a1a2e; }
+  .accent-bar { height: 3px; background: #000000; margin: 0 52px 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
-  .body { flex: 1; padding: 26px 52px 18px; display: flex; flex-direction: column; }
+  .body { flex: 1; padding: 20px 52px 18px; display: flex; flex-direction: column; }
 
   .date-line { font-size: 9.5pt; color: #333333; margin-bottom: 14px; text-align: right; }
   .recipient-line { font-size: 9.5pt; color: #333333; margin-bottom: 14px; }
@@ -44,6 +45,12 @@ const baseCSS = `
   .data-table td.col-value { color: #000000; line-height: 1.5; }
 
   .info-box { background: #f7f7f5; border: 1.5px solid #cccccc; border-radius: 5px; padding: 10px 14px; margin: 8px 0 12px; page-break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .clinical-note { border-left: 4px solid #1a1a2e; border-top: none; border-right: none; border-bottom: none; border-radius: 0; background: #fafaf8; padding: 14px 18px; margin: 10px 0 14px; page-break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .clinical-note-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .clinical-note-icon { font-size: 9pt; color: #1a1a2e; }
+  .clinical-note-label { font-size: 7.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #1a1a2e; }
+  .clinical-note-text { font-family: Georgia, serif; font-size: 10pt; color: #222222; line-height: 1.75; font-style: italic; }
   .info-box-label { font-size: 7.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #555555; margin-bottom: 6px; }
   .info-box-text { font-size: 9.5pt; color: #111111; line-height: 1.6; }
   .info-box ul { list-style: none; padding: 0; margin: 0; }
@@ -57,22 +64,23 @@ const baseCSS = `
   .billing-box { background: #f0f4ff; border: 1.5px solid #aabcee; border-radius: 5px; padding: 10px 14px; margin: 8px 0 12px; page-break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .billing-box .info-box-label { color: #1e3a8a; }
 
-  .sig-section { margin-top: auto; padding-top: 16px; display: flex; justify-content: space-between; align-items: flex-end; }
-  .sig-close { font-size: 10pt; color: #111111; margin-bottom: 28px; }
-  .sig-line { width: 210px; border-bottom: 1.5px solid #000000; margin-bottom: 6px; }
+  .sig-section { margin-top: auto; padding-top: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .sig-close { font-size: 10pt; color: #111111; margin-bottom: 52px; }
+  .sig-line { width: 240px; border-bottom: 1.5px solid #000000; margin-bottom: 6px; }
   .sig-name { font-size: 10.5pt; font-weight: 700; color: #000000; }
   .sig-credential { font-size: 9pt; color: #333333; margin-top: 2px; }
   .ref-number { font-size: 8pt; color: #888888; text-align: right; }
 
-  .sig-dual { display: flex; gap: 32px; margin-top: 36px; }
+  .sig-dual { display: flex; gap: 40px; margin-top: 36px; }
   .sig-block-item { flex: 1; }
-  .sig-block-space { height: 36px; border-bottom: 1.5px solid #000000; margin-bottom: 6px; }
+  .sig-block-space { height: 52px; border-bottom: 1.5px solid #000000; margin-bottom: 6px; }
   .sig-block-label { font-size: 9.5pt; color: #333333; }
   .sig-block-date { font-size: 9pt; color: #666666; margin-top: 4px; }
 
-  .footer-band { background: #f0efeb; border-top: 1.5px solid #cccccc; padding: 8px 52px; display: flex; justify-content: space-between; align-items: center; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .footer-left { font-size: 7pt; color: #555555; }
-  .footer-right { font-size: 7pt; color: #888888; font-style: italic; }
+  .footer-band { background: #ffffff; border-top: 2.5px solid #1a1a2e; padding: 10px 52px 12px; display: flex; justify-content: space-between; align-items: center; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .footer-left { font-size: 7pt; color: #333333; line-height: 1.6; max-width: 72%; }
+  .footer-right { font-size: 7pt; color: #333333; text-align: right; line-height: 1.6; }
+  .footer-divider { width: 1px; background: #cccccc; height: 22px; flex-shrink: 0; }
 
   h1, h2, h3 { page-break-after: avoid; }
   p, li { orphans: 3; widows: 3; }
@@ -96,6 +104,7 @@ const header = () => `
       Tel: 561-735-7531 &nbsp;|&nbsp; Fax: 561-742-8250
     </div>
   </div>
+  <hr class="header-divider"/>
   <div class="accent-bar"></div>`
 
 const reBlock = (title, items) => `
@@ -121,9 +130,25 @@ const sig = (provider) => `
 
 const footer = () => `
   <div class="footer-band">
-    <div class="footer-left">This document is confidential and intended solely for the use of the addressed recipient. Unauthorized disclosure is prohibited under HIPAA regulations.</div>
-    <div class="footer-right">ID Consultants Inc. &nbsp;&bull;&nbsp; idconsults.net</div>
+    <div class="footer-left">
+      <strong style="font-size:7.5pt; color:#000000; letter-spacing:0.3px;">CONFIDENTIAL</strong> &nbsp;&bull;&nbsp;
+      This document is intended solely for the addressed recipient. Unauthorized disclosure is prohibited under HIPAA regulations (45 CFR &sect;164.530).
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-right">
+      ID Consultants Inc.<br/>
+      561-735-7531 &nbsp;&bull;&nbsp; idconsults.net
+    </div>
   </div>`
+
+const clinicalNote = (text) => text ? `
+  <div class="clinical-note">
+    <div class="clinical-note-header">
+      <span class="clinical-note-icon">&#8853;</span>
+      <span class="clinical-note-label">Clinical Notes</span>
+    </div>
+    <div class="clinical-note-text">${text}</div>
+  </div>` : ''
 
 const infoBox = (label, content, cls='info-box') => `
   <div class="${cls}">
@@ -170,6 +195,7 @@ export function generateRTW(d) {
   const labels = { full: 'Full Duty Clearance', modified: 'Modified / Restricted Duty Clearance', not_cleared: 'Not Cleared for Return to Work' }
   const color = colors[d.clearanceType] || '#374151'
   const label = labels[d.clearanceType] || 'Return-to-Work Status'
+  const showDx = d.showDiagnosis !== false
 
   return wrap(`
     <div class="recipient-line">To Whom It May Concern / Human Resources Department</div>
@@ -181,7 +207,7 @@ export function generateRTW(d) {
       ['Date of Injury',       d.patient.dateOfInjury],
     ])}
     <p class="body-para">Dear Employer / Human Resources,</p>
-    <p class="body-para">This letter confirms that <strong>${d.patient.name || 'the above-named patient'}</strong>${d.patient.diagnosis ? `, a patient treated for <em>${d.patient.diagnosis}</em>,` : ''} has been clinically evaluated and the following return-to-work determination has been made:</p>
+    <p class="body-para">This letter confirms that <strong>${d.patient.name || 'the above-named patient'}</strong>${showDx && d.patient.diagnosis ? `, a patient treated for <em>${d.patient.diagnosis}</em>,` : ''} has been clinically evaluated and the following return-to-work determination has been made:</p>
     <div class="badge-row"><span class="badge" style="background:${color};">&#9679;&nbsp; ${label}</span></div>
     ${d.returnDate ? `<p class="body-para">The patient is authorized to return to work effective <strong>${d.returnDate}</strong>.</p>` : ''}
     ${d.restrictions?.length ? listBox('Work Restrictions / Modified Duty Requirements', d.restrictions) : d.clearanceType === 'full' ? `<p class="body-para">The patient is cleared to return to full duty without restrictions.</p>` : ''}
@@ -191,7 +217,7 @@ export function generateRTW(d) {
       ['Date of Injury',        d.patient.dateOfInjury],
       ['Diagnosis',             d.patient.diagnosis],
     ])}
-    ${d.additionalNotes ? infoBox('Clinical Notes', d.additionalNotes) : ''}
+    ${clinicalNote(d.additionalNotes)}
     <p class="body-para">Please do not hesitate to contact our office at <strong>561-735-7531</strong> or fax <strong>561-742-8250</strong> if you require additional documentation regarding this determination.</p>
     ${sig(d.signingProvider)}
   `)
