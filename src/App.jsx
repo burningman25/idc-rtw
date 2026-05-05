@@ -115,6 +115,52 @@ function Select({ label, value, onChange, options }) {
     </div>
   )
 }
+function DatePicker({ label, value, onChange }) {
+  // Convert "Month D, YYYY" display format to/from "YYYY-MM-DD" for the input
+  const toInputVal = (str) => {
+    if (!str) return ''
+    try {
+      const d = new Date(str)
+      if (isNaN(d)) return ''
+      return d.toISOString().slice(0, 10)
+    } catch { return '' }
+  }
+  const toDisplayVal = (str) => {
+    if (!str) return ''
+    try {
+      const [y, m, d] = str.split('-').map(Number)
+      return new Date(y, m - 1, d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+    } catch { return str }
+  }
+  return (
+    <div>
+      <label style={S.label}>{label}</label>
+      <input
+        type="date"
+        style={{ ...S.input, colorScheme: 'light' }}
+        value={toInputVal(value)}
+        onChange={e => onChange(toDisplayVal(e.target.value))}
+      />
+      {value && <div style={{ fontSize: '11px', color: '#0d7377', marginTop: '4px' }}>{value}</div>}
+    </div>
+  )
+}
+
+function Toggle({ label, checked, onChange, hint }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', background: checked ? '#e8f6f7' : '#f8fafc', border: `1px solid ${checked ? '#0d7377' : '#dde1e8'}`, borderRadius: '8px', cursor: 'pointer' }} onClick={() => onChange(!checked)}>
+      <div>
+        <div style={{ fontSize: '13px', fontWeight: '500', color: '#1a1a2e' }}>{label}</div>
+        {hint && <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '2px' }}>{hint}</div>}
+      </div>
+      <div style={{ width: '40px', height: '22px', borderRadius: '11px', background: checked ? '#0d7377' : '#d1d5db', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
+        <div style={{ position: 'absolute', top: '3px', left: checked ? '21px' : '3px', width: '16px', height: '16px', borderRadius: '50%', background: 'white', transition: 'left 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,0.2)' }} />
+      </div>
+    </div>
+  )
+}
+
+
 
 function LetterForm({ form, setForm }) {
   const up = (key, val) => setForm(f => ({ ...f, [key]: val }))
@@ -143,13 +189,21 @@ function LetterForm({ form, setForm }) {
         <Input label="Date of Injury / Illness" value={form.patient.dateOfInjury} onChange={v => upP('dateOfInjury', v)} />
         <Input label="Diagnosis" value={form.patient.diagnosis} onChange={v => upP('diagnosis', v)} />
       </div>
+      <div style={{ marginTop: '14px' }}>
+        <Toggle
+          label="Show diagnosis in letter"
+          hint="When off, diagnosis is omitted from the printed letter"
+          checked={form.showDiagnosis !== false}
+          onChange={v => up('showDiagnosis', v)}
+        />
+      </div>
     </div>
     <div style={S.card}>
       <div style={S.sectionHead}>Clearance & Dates</div>
       <div style={{ ...S.grid2, gap: '12px' }}>
         <Select label="Clearance Type" value={form.clearanceType} onChange={v => up('clearanceType', v)} options={[['full','Full Duty Clearance'],['modified','Modified / Restricted Duty'],['not_cleared','Not Cleared for Return']]} />
-        <Input label="Return-to-Work Date" value={form.returnDate} onChange={v => up('returnDate', v)} placeholder="e.g. June 1, 2026" />
-        <Input label="Follow-Up Date" value={form.followUpDate} onChange={v => up('followUpDate', v)} placeholder="e.g. June 15, 2026" />
+        <DatePicker label="Return-to-Work Date" value={form.returnDate} onChange={v => up('returnDate', v)} />
+        <DatePicker label="Follow-Up Date" value={form.followUpDate} onChange={v => up('followUpDate', v)} />
       </div>
     </div>
     <div style={S.card}>
